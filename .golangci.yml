@@ -1,0 +1,93 @@
+# yaml-language-server: $schema=https://golangci-lint.run/jsonschema/golangci.jsonschema.json
+version: "2"
+linters:
+  default: standard
+  enable:
+    - exhaustive
+    - exhaustruct
+    - exptostd
+    - nilerr
+    - nilnil
+    - iface
+    - ireturn
+    - revive
+    - testifylint
+    - depguard
+    - nonamedreturns
+  settings:
+    iface:
+      enable:
+        - identical
+        - unused
+        - opaque
+        - unexported
+    ireturn:
+      allow:
+        - error
+        - stdlib
+        - generic
+    revive:
+      enable-all-rules: true
+      rules:
+        # https://github.com/mgechev/revive/blob/HEAD/RULES_DESCRIPTIONS.md#add-constant
+        - name: add-constant
+          disabled: true
+        # https://github.com/mgechev/revive/blob/HEAD/RULES_DESCRIPTIONS.md#cognitive-complexity
+        - name: cognitive-complexity
+          disabled: true
+        # https://github.com/mgechev/revive/blob/HEAD/RULES_DESCRIPTIONS.md#context-as-argument
+        - name: context-as-argument
+          arguments:
+            - allowTypesBefore: "*testing.T"
+        # https://github.com/mgechev/revive/blob/HEAD/RULES_DESCRIPTIONS.md#cyclomatic
+        - name: cyclomatic
+          disabled: true
+        # https://github.com/mgechev/revive/blob/HEAD/RULES_DESCRIPTIONS.md#dot-imports
+        - name: dot-imports
+          exclude:
+            - TEST
+        # https://github.com/mgechev/revive/blob/HEAD/RULES_DESCRIPTIONS.md#enforce-switch-style
+        - name: enforce-switch-style
+          arguments:
+            # Missing default cases are handled by the "exhaustive" linter.
+            - allowNoDefault
+        # https://github.com/mgechev/revive/blob/HEAD/RULES_DESCRIPTIONS.md#exported
+        - name: exported
+          disabled: true
+        # https://github.com/mgechev/revive/blob/HEAD/RULES_DESCRIPTIONS.md#function-length
+        - name: function-length
+          disabled: true
+        # https://github.com/mgechev/revive/blob/HEAD/RULES_DESCRIPTIONS.md#line-length-limit
+        # Line length limit is managed by the golines formatter.
+        - name: line-length-limit
+          disabled: true
+        # https://github.com/mgechev/revive/blob/HEAD/RULES_DESCRIPTIONS.md#max-public-structs
+        - name: max-public-structs
+          disabled: true
+        # https://github.com/mgechev/revive/blob/HEAD/RULES_DESCRIPTIONS.md#package-comments
+        - name: package-comments
+          disabled: true
+        # https://github.com/mgechev/revive/blob/HEAD/RULES_DESCRIPTIONS.md#unhandled-error
+        - name: unhandled-error
+          severity: warning
+          disabled: false
+          arguments:
+            - fmt.Printf
+            - fmt.Println
+        # https://github.com/mgechev/revive/blob/HEAD/RULES_DESCRIPTIONS.md#unnecessary-format
+        - name: unnecessary-format
+          exclude:
+            - TEST
+formatters:
+  enable:
+    - gci
+    - gofmt
+    - golines
+  settings:
+    gci:
+      sections:
+        - standard
+        - default
+        - prefix(github.com/sokkelorg/)
+    golines:
+      max-len: 120
